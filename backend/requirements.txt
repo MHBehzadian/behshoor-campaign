@@ -1,0 +1,13 @@
+fastapi==0.139.0
+uvicorn[standard]==0.50.2
+pydantic-settings==2.14.2
+sqlalchemy[asyncio]==2.0.51
+asyncpg==0.31.0
+alembic==1.18.5
+aiogram==3.29.1
+httpx==0.28.1
+python-multipart==0.0.32
+passlib[bcrypt]==1.7.4
+pyjwt==2.10.1
+tzdata==2025.2
+aiosqlite==0.22.1  # local/dev only — production uses Postgres+asyncpg

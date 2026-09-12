@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ویزیتور — کمپین زنجان</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;700;800&family=JetBrains+Mono:wght@500&display=swap" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <header class="app-header">
+    <h1>🧑‍💼 ویزیتور</h1>
+    <div class="row" style="align-items:center">
+      <span class="who" id="who"></span>
+      <button class="btn secondary" id="logout-btn">خروج</button>
+    </div>
+  </header>
+
+  <nav class="tabs">
+    <button data-tab="pack" class="active">صف پخش پک</button>
+    <button data-tab="followup">صف پیگیری</button>
+  </nav>
+
+  <main>
+    <section class="tab-panel active" id="panel-pack">
+      <p class="meta" id="pack-region-label">در حال بارگذاری ناحیه...</p>
+      <div class="map" id="pack-map"></div>
+      <div id="pack-list"></div>
+    </section>
+
+    <section class="tab-panel" id="panel-followup">
+      <p class="meta">مغازه‌هایی که الان نوبت پیگیری سفارششونه — سفارش ۱ یا ۲، وضعیت زیر هر کارت مشخصه.</p>
+      <div id="followup-list"></div>
+    </section>
+  </main>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/map.js"></script>
+  <script src="js/visitor.js"></script>
+</body>
+</html>

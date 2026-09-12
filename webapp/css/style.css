@@ -1,0 +1,151 @@
+:root {
+  --bg: #EEF0EA;
+  --surface: #FFFFFF;
+  --surface-2: #E3E7DD;
+  --ink: #1E2A26;
+  --ink-soft: #546056;
+  --border: #D3D7C9;
+  --visitor: #2F6F62;
+  --visitor-bg: #DCEAE4;
+  --money: #A9761F;
+  --money-bg: #F1E6CC;
+  --scout: #3E6491;
+  --scout-bg: #DDE6EE;
+  --alert: #AE4E37;
+  --alert-bg: #F3DFD7;
+  --shadow: 0 1px 2px rgba(30,42,38,.06), 0 8px 24px -12px rgba(30,42,38,.18);
+  --radius: 12px;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #11161A;
+    --surface: #171E22;
+    --surface-2: #1E262A;
+    --ink: #E7EBE4;
+    --ink-soft: #A2AFA6;
+    --border: #2B3530;
+    --visitor: #5BB6A0;
+    --visitor-bg: #1B3530;
+    --money: #E3B75B;
+    --money-bg: #3A2F17;
+    --scout: #7CAAD6;
+    --scout-bg: #1E2E3E;
+    --alert: #E28A6F;
+    --alert-bg: #3B241C;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px -12px rgba(0,0,0,.5);
+  }
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; background: var(--bg); color: var(--ink); }
+body {
+  direction: rtl;
+  font-family: 'Vazirmatn', Tahoma, 'Segoe UI', sans-serif;
+  min-height: 100vh;
+  line-height: 1.7;
+}
+.num { font-family: 'JetBrains Mono', Consolas, monospace; direction: ltr; display: inline-block; }
+
+a { color: inherit; }
+button, input, select, textarea { font-family: inherit; font-size: 14px; }
+
+/* ---------- layout ---------- */
+.app-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 12px 20px; background: var(--surface); border-bottom: 1px solid var(--border);
+  position: sticky; top: 0; z-index: 20;
+}
+.app-header h1 { font-size: 17px; margin: 0; font-weight: 800; }
+.app-header .who { font-size: 13px; color: var(--ink-soft); }
+
+.tabs {
+  display: flex; gap: 4px; padding: 8px 16px; background: var(--surface);
+  border-bottom: 1px solid var(--border); overflow-x: auto;
+}
+.tabs button {
+  border: none; background: transparent; color: var(--ink-soft);
+  padding: 8px 14px; border-radius: 999px; cursor: pointer; white-space: nowrap; font-weight: 600;
+}
+.tabs button.active { background: var(--visitor-bg); color: var(--visitor); }
+
+main { padding: 16px 20px 60px; max-width: 1100px; margin: 0 auto; }
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+
+.btn {
+  border: none; border-radius: 9px; padding: 9px 16px; font-weight: 700; cursor: pointer;
+  background: var(--visitor); color: #fff;
+}
+.btn:hover { opacity: .92; }
+.btn.secondary { background: var(--surface-2); color: var(--ink); }
+.btn.danger { background: var(--alert); color: #fff; }
+.btn:disabled { opacity: .5; cursor: not-allowed; }
+
+.card {
+  background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+  padding: 16px; box-shadow: var(--shadow); margin-bottom: 14px;
+}
+.card h3 { margin: 0 0 6px; font-size: 15.5px; }
+.card .meta { font-size: 13px; color: var(--ink-soft); margin-bottom: 4px; }
+
+.field { display: flex; flex-direction: column; gap: 5px; margin-bottom: 12px; }
+.field label { font-size: 12.5px; color: var(--ink-soft); font-weight: 600; }
+.field input, .field select, .field textarea {
+  border: 1px solid var(--border); border-radius: 8px; padding: 9px 10px; background: var(--surface); color: var(--ink);
+}
+.row { display: flex; gap: 10px; flex-wrap: wrap; }
+
+.chip {
+  display: inline-flex; align-items: center; gap: 4px; border-radius: 999px;
+  padding: 3px 10px; font-size: 12px; font-weight: 700;
+}
+.chip.scout { background: var(--scout-bg); color: var(--scout); }
+.chip.visitor { background: var(--visitor-bg); color: var(--visitor); }
+.chip.money { background: var(--money-bg); color: var(--money); }
+.chip.alert { background: var(--alert-bg); color: var(--alert); }
+.chip.muted { background: var(--surface-2); color: var(--ink-soft); }
+
+.score-picker { display: flex; gap: 6px; }
+.score-picker button {
+  border: 1px solid var(--border); background: var(--surface); border-radius: 8px;
+  padding: 8px 12px; cursor: pointer; font-weight: 700;
+}
+.score-picker button.selected { background: var(--money); color: #fff; border-color: var(--money); }
+
+.map { height: 360px; border-radius: var(--radius); overflow: hidden; border: 1px solid var(--border); margin-bottom: 16px; }
+.map.tall { height: 460px; }
+
+.empty-state { text-align: center; color: var(--ink-soft); padding: 40px 10px; }
+
+.error-msg { color: var(--alert); font-size: 13.5px; margin-top: 6px; min-height: 1em; }
+.toast {
+  position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+  background: var(--ink); color: var(--bg); padding: 10px 18px; border-radius: 999px;
+  font-size: 13.5px; z-index: 100; box-shadow: var(--shadow);
+}
+
+.table-wrap { overflow-x: auto; border-radius: var(--radius); border: 1px solid var(--border); }
+table { width: 100%; border-collapse: collapse; background: var(--surface); font-size: 13.5px; }
+th, td { padding: 10px 12px; text-align: right; border-bottom: 1px solid var(--border); }
+th { background: var(--surface-2); color: var(--ink-soft); font-size: 12px; text-transform: uppercase; }
+tr:last-child td { border-bottom: none; }
+
+.login-wrap {
+  min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px;
+}
+.login-card { width: 100%; max-width: 360px; }
+.login-card h1 { text-align: center; margin-bottom: 4px; }
+.login-card p.sub { text-align: center; color: var(--ink-soft); font-size: 13.5px; margin-top: 0; margin-bottom: 20px; }
+
+.modal-overlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,.45); display: flex;
+  align-items: center; justify-content: center; z-index: 50; padding: 16px;
+}
+.modal { background: var(--surface); border-radius: var(--radius); padding: 20px; max-width: 420px; width: 100%; max-height: 90vh; overflow-y: auto; }
+.modal h3 { margin-top: 0; }
+.modal-actions { display: flex; gap: 8px; justify-content: flex-end; margin-top: 14px; }
+
+.rec-row { display: flex; align-items: center; gap: 10px; }
+.rec-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--alert); display: none; }
+.rec-dot.on { display: inline-block; animation: pulse 1s infinite; }
+@keyframes pulse { 50% { opacity: .3; } }

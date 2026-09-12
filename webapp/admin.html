@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>پنل ادمین — کمپین زنجان</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;700;800&family=JetBrains+Mono:wght@500&display=swap" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet-draw@1.0.4/dist/leaflet.draw.css" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <header class="app-header">
+    <h1>🗺 پنل ادمین</h1>
+    <div class="row" style="align-items:center">
+      <span class="who" id="who"></span>
+      <button class="btn secondary" id="logout-btn">خروج</button>
+    </div>
+  </header>
+
+  <nav class="tabs">
+    <button data-tab="dashboard" class="active">داشبورد</button>
+    <button data-tab="regions">نواحی</button>
+    <button data-tab="schedule">برنامه‌ی روزها</button>
+    <button data-tab="settings">تنظیمات</button>
+    <button data-tab="users">کاربران</button>
+    <button data-tab="commissions">کمیسیون‌ها</button>
+  </nav>
+
+  <main>
+    <!-- Dashboard -->
+    <section class="tab-panel active" id="panel-dashboard">
+      <div class="row" style="margin-bottom:10px">
+        <select id="dash-region-filter"><option value="">همه‌ی نواحی</option></select>
+        <select id="dash-status-filter">
+          <option value="">همه‌ی وضعیت‌ها</option>
+        </select>
+      </div>
+      <div class="map tall" id="dash-map"></div>
+      <div id="dash-list"></div>
+    </section>
+
+    <!-- Regions -->
+    <section class="tab-panel" id="panel-regions">
+      <div class="card">
+        <h3>افزودن ناحیه‌ی جدید</h3>
+        <div class="row">
+          <div class="field" style="flex:1"><label>نام ناحیه</label><input id="new-region-name" placeholder="مثلاً: ناحیه ۳ - گاوازنگ" /></div>
+        </div>
+        <button class="btn" id="add-region-btn">افزودن</button>
+        <div class="error-msg" id="region-error"></div>
+      </div>
+      <div class="row" style="align-items:flex-start; gap:16px">
+        <div style="flex:1; min-width:220px" id="region-list"></div>
+        <div style="flex:2; min-width:300px">
+          <div class="map" id="region-map"></div>
+          <div class="row">
+            <button class="btn" id="save-boundary-btn" disabled>ذخیره‌ی مرز</button>
+            <button class="btn secondary" id="clear-boundary-btn" disabled>پاک کردن</button>
+          </div>
+          <p class="meta">یک ناحیه رو از لیست انتخاب کن، بعد با ابزار چندضلعی (گوشه‌ی بالا-راست نقشه) مرزش رو بکش یا ویرایش کن.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Day schedule -->
+    <section class="tab-panel" id="panel-schedule">
+      <p class="meta">نوع هر روز رو جدا مشخص کن — هر وقت خواستی جابه‌جا کن یا تعطیل ثبت کن.</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>تاریخ</th><th>نوع روز</th><th>ناحیه‌ی هدف</th><th></th></tr></thead>
+          <tbody id="schedule-body"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Settings -->
+    <section class="tab-panel" id="panel-settings">
+      <div class="card" style="max-width:420px">
+        <h3>تنظیمات سراسری</h3>
+        <div class="field"><label>آستانه‌ی امتیاز پخش (۱ تا ۳)</label><input type="number" id="s-threshold" min="1" max="3" /></div>
+        <div class="field">
+          <label><input type="checkbox" id="s-dual-team" /> زیرتیم دوم ویزیتور فعال باشد</label>
+        </div>
+        <div class="field"><label>دستمزد ثابت در‌آور (هر مغازه)</label><input type="number" id="s-scout-fee" /></div>
+        <div class="field"><label>دستمزد ثابت ویزیتور (هر مغازه)</label><input type="number" id="s-visitor-fee" /></div>
+        <div class="field"><label>درصد کمیسیون ویزیتور</label><input type="number" id="s-visitor-pct" /></div>
+        <div class="field"><label>درصد کمیسیون پخش</label><input type="number" id="s-dist-pct" /></div>
+        <div class="field"><label>بازه‌ی سرکشی (روز)</label><input type="number" id="s-checkup-days" /></div>
+        <button class="btn" id="save-settings-btn">ذخیره</button>
+        <div class="error-msg" id="settings-msg"></div>
+      </div>
+    </section>
+
+    <!-- Users -->
+    <section class="tab-panel" id="panel-users">
+      <div class="card" style="max-width:420px">
+        <h3>افزودن کاربر</h3>
+        <div class="field">
+          <label>نقش</label>
+          <select id="u-role">
+            <option value="scout">در‌آور (فقط بات)</option>
+            <option value="visitor">ویزیتور</option>
+            <option value="distributor">پخش</option>
+            <option value="admin">ادمین</option>
+          </select>
+        </div>
+        <div class="field"><label>نام کامل</label><input id="u-name" /></div>
+        <div class="field"><label>موبایل</label><input id="u-phone" /></div>
+        <div class="field" id="u-telegram-field"><label>آیدی عددی تلگرام</label><input id="u-telegram" type="number" /></div>
+        <div class="field" id="u-username-field"><label>نام کاربری وب‌سایت</label><input id="u-username" /></div>
+        <div class="field" id="u-password-field"><label>رمز عبور</label><input id="u-password" type="password" /></div>
+        <div class="field" id="u-subteam-field"><label>زیرتیم ویزیتور</label>
+          <select id="u-subteam"><option value="">—</option><option value="1">۱</option><option value="2">۲</option></select>
+        </div>
+        <button class="btn" id="add-user-btn">افزودن</button>
+        <div class="error-msg" id="user-error"></div>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>نام</th><th>نقش</th><th>کاربری/تلگرام</th><th>زیرتیم</th></tr></thead>
+          <tbody id="users-body"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Commissions -->
+    <section class="tab-panel" id="panel-commissions">
+      <div class="row" style="margin-bottom:10px">
+        <select id="comm-user-filter"><option value="">همه‌ی کاربران</option></select>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>کاربر</th><th>نقش</th><th>مغازه</th><th>مبلغ</th><th>تاریخ</th></tr></thead>
+          <tbody id="commissions-body"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://unpkg.com/leaflet-draw@1.0.4/dist/leaflet.draw.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/jalali.js"></script>
+  <script src="js/map.js"></script>
+  <script src="js/admin.js"></script>
+</body>
+</html>

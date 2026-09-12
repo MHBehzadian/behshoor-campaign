@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ورود — کمپین زنجان</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;700;800&family=JetBrains+Mono:wght@500&display=swap" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div class="login-wrap">
+    <div class="card login-card">
+      <h1>🗺 کمپین زنجان</h1>
+      <p class="sub">ورود ادمین / ویزیتور / پخش</p>
+      <form id="login-form">
+        <div class="field">
+          <label for="username">نام کاربری</label>
+          <input id="username" autocomplete="username" required />
+        </div>
+        <div class="field">
+          <label for="password">رمز عبور</label>
+          <input id="password" type="password" autocomplete="current-password" required />
+        </div>
+        <button class="btn" type="submit" style="width:100%">ورود</button>
+        <div class="error-msg" id="error"></div>
+      </form>
+    </div>
+  </div>
+
+  <script src="js/api.js"></script>
+  <script src="js/login.js"></script>
+</body>
+</html>

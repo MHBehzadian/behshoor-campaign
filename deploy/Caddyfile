@@ -1,0 +1,22 @@
+{$DOMAIN} {
+	encode gzip
+
+	# Backend API, same-origin under /api — the webapp's js/api.js relies on
+	# this exact prefix. Caddy issues/renews the Let's Encrypt cert for
+	# {$DOMAIN} automatically; nothing else to configure for TLS.
+	handle_path /api/* {
+		reverse_proxy backend:8000
+	}
+
+	# Voice-note recordings & shop photos the backend proxies from Telegram.
+	handle /uploads/* {
+		reverse_proxy backend:8000
+	}
+
+	# Static webapp (plain HTML/CSS/JS, no build step).
+	handle {
+		root * /srv/webapp
+		try_files {path} /index.html
+		file_server
+	}
+}
