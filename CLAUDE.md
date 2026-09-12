@@ -32,7 +32,7 @@ https://claude.ai/code/artifact/54c6e469-ffc4-436e-9875-e0dc2c5fb09e
 - `backend/` — FastAPI (API وب‌سایت) + aiogram v3 (بات در‌آور) + SQLAlchemy async + Alembic + PostgreSQL
 - `webapp/` — HTML/CSS/JS خام (بدون بیلد) با Leaflet + OpenStreetMap برای ادمین/ویزیتور/پخش
 - `deploy/Caddyfile` — پروکسی `/api` به بک‌اند + سرو استاتیک `webapp/` + SSL خودکار (Let's Encrypt)
-- `scripts/backup.sh` / `scripts/restore.sh` — بکاپ خودکار هر ۶ ساعت به تلگرام ادمین + بازیابی سریع دستی
+- `scripts/backup.sh` / `scripts/restore.sh` — بکاپ **کامل** خودکار هر ۶ ساعت به تلگرام ادمین (دیتابیس + آپلودها + خود `.env`ها، یه آرشیو) + بازیابی سریع؛ کافیه برای بازسازی کامل روی سرور تازه اگه سرور فعلی کلاً از دست بره
 - `install.sh` — نصب تک‌خطی (Docker + کلون + پرسش تنظیمات + migrate + ساخت ادمین اول + کرون بکاپ)
 
 ## Design tokens (برای webapp، فاز ۳)
