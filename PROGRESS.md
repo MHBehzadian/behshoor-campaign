@@ -82,7 +82,7 @@ python -m http.server 5500 --directory ../webapp   # ترمینال دوم
 - کمیسیون‌ها و لیست/نقشه‌ی مغازه‌ها از فاز ۳ موجوده؛ چیزی که مونده خلاصه‌ی آماری per-ناحیه (چند تا تبلیغ‌شده/در پیگیری/سفارش‌دار) به‌صورت یه جدول یا کارت خلاصه، نه فقط لیست خام
 
 ## فاز ۵ — دیپلوی ✅
-- **ریپو:** https://github.com/MHBehzadian/behshoor-campaign (خصوصی)
+- **ریپو:** https://github.com/MHBehzadian/behshoor-campaign (عمومی — چون نصب تک‌خطی `curl | bash` بدون توکن نیاز به دسترسی به فایل خام گیت‌هاب داره؛ تست شد که `raw.githubusercontent.com/.../install.sh` واقعاً در دسترسه)
 - **دامنه:** `campaign.behshoor-olive.ir` (پیش‌فرض قابل تغییر حین نصب) — باید قبل از نصب رکورد A‌ش به IP سرور اشاره کنه
 - **نصب تک‌خطی:**
   ```bash

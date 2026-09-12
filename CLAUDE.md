@@ -2,7 +2,7 @@
 
 **کمپین بازاریابی به‌شور** — سیستم مدیریت کمپین تبلیغاتی حضوری برند به‌شور در زنجان (نسبت به [behshoor-olive](https://github.com/MHBehzadian/behshoor-olive) یه پروژه‌ی جداست). زنجان به ۲۰ ناحیه تقسیم شده؛ هر روز یک ناحیه هدف انتخاب می‌شود، یک تیم پک رایگان پخش می‌کند، بعد سفارش پیگیری و تحویل می‌شود.
 
-- **ریپو:** https://github.com/MHBehzadian/behshoor-campaign (خصوصی)
+- **ریپو:** https://github.com/MHBehzadian/behshoor-campaign (عمومی — لازمه چون نصب تک‌خطی `curl | bash` بدون توکن به فایل خام گیت‌هاب نیاز داره؛ هیچ secret ای توش کامیت نمی‌شه)
 - **سایت:** `https://campaign.behshoor-olive.ir` (زیردامنه‌ی behshoor-olive.ir — قابل تغییر حین نصب)
 - **نصب:** `curl -fsSL https://raw.githubusercontent.com/MHBehzadian/behshoor-campaign/main/install.sh | bash`
 
