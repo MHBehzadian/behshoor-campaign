@@ -13,6 +13,7 @@ from app.api.routers import (
     regions,
     settings,
     shops,
+    stats,
     uploads,
     users,
 )
@@ -20,7 +21,8 @@ from app.api.routers import (
 app = FastAPI(title="Zanjan Campaign API")
 app.mount("/uploads", StaticFiles(directory=str(uploads.UPLOAD_DIR)), name="uploads")
 
-# TODO(phase 3): once the webapp has a real domain, replace "*" with it.
+# In production (deploy/Caddyfile) the webapp and API share one origin under
+# /api, so this only matters for local dev (webapp on :5500, API on :8000).
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -41,6 +43,7 @@ for router in (
     commissions.router,
     users.router,
     uploads.router,
+    stats.router,
 ):
     app.include_router(router)
 

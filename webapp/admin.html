@@ -21,6 +21,7 @@
 
   <nav class="tabs">
     <button data-tab="dashboard" class="active">داشبورد</button>
+    <button data-tab="stats">آمار نواحی</button>
     <button data-tab="regions">نواحی</button>
     <button data-tab="schedule">برنامه‌ی روزها</button>
     <button data-tab="settings">تنظیمات</button>
@@ -39,6 +40,22 @@
       </div>
       <div class="map tall" id="dash-map"></div>
       <div id="dash-list"></div>
+    </section>
+
+    <!-- Region stats -->
+    <section class="tab-panel" id="panel-stats">
+      <p class="meta">خلاصه‌ی وضعیت مغازه‌های هر ناحیه — چند تا تبلیغ شدن، چند تا در پیگیری‌ان، چند تا سفارش اول/دوم دادن.</p>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>ناحیه</th><th>کل</th><th>تبلیغ‌شده</th><th>در پیگیری</th>
+              <th>سفارش ۱</th><th>سفارش ۲</th><th>مشتری دائمی</th><th>کنارگذاشته</th>
+            </tr>
+          </thead>
+          <tbody id="stats-body"></tbody>
+        </table>
+      </div>
     </section>
 
     <!-- Regions -->

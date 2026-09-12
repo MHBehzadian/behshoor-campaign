@@ -183,6 +183,22 @@ class SettingsUpdate(BaseModel):
 
 
 # --------------------------------------------------------------------------
+# Region stats (admin dashboard summary)
+# --------------------------------------------------------------------------
+
+class RegionStatsOut(BaseModel):
+    region_id: int
+    region_name: str
+    total: int
+    advertised: int
+    in_followup: int
+    order1_placed: int
+    order2_placed: int
+    steady_customer: int
+    dropped: int
+
+
+# --------------------------------------------------------------------------
 # Commission report
 # --------------------------------------------------------------------------
 

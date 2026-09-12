@@ -330,6 +330,27 @@
       .join("");
   }
 
+  // ---------------- region stats ----------------
+  async function initStats() {
+    const rows = await api("/stats/regions");
+    document.getElementById("stats-body").innerHTML = rows.length
+      ? rows
+          .map(
+            (r) => `<tr>
+        <td>${r.region_name}</td>
+        <td class="num">${r.total}</td>
+        <td class="num">${r.advertised}</td>
+        <td class="num">${r.in_followup}</td>
+        <td class="num">${r.order1_placed}</td>
+        <td class="num">${r.order2_placed}</td>
+        <td class="num">${r.steady_customer}</td>
+        <td class="num">${r.dropped}</td>
+      </tr>`
+          )
+          .join("")
+      : `<tr><td colspan="8" class="empty-state">هنوز ناحیه‌ای مغازه ندارد.</td></tr>`;
+  }
+
   // ---------------- commissions ----------------
   async function initCommissions() {
     if (!usersCache.length) usersCache = await api("/users");
@@ -361,6 +382,7 @@
   // ---------------- boot ----------------
   (async function boot() {
     await initDashboard();
+    await initStats();
     await initRegions();
     await initSchedule();
     await initSettings();
