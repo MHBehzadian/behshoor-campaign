@@ -89,12 +89,37 @@ echo "-- منتظر آماده شدن دیتابیس..."
 until docker compose exec -T db pg_isready -U zanjan >/dev/null 2>&1; do sleep 2; done
 
 echo "-- اجرای مایگریشن‌ها..."
-docker compose exec -T backend alembic upgrade head
+if ! docker compose exec -T backend alembic upgrade head; then
+  echo "خطا: مایگریشن شکست خورد. لاگ بک‌اند:" >&2
+  docker compose logs backend --tail 50 >&2
+  exit 1
+fi
 
 if [ -n "${ADMIN_PASSWORD:-}" ]; then
   echo "-- ساخت/به‌روزرسانی کاربر ادمین..."
   docker compose exec -T backend python scripts/create_admin.py --username "$ADMIN_USERNAME" --password "$ADMIN_PASSWORD"
 fi
+
+# Belt-and-suspenders: `set -e` should already have caught a failed migration
+# above, but this actually queries the table that broke last time, so a
+# silent/partial failure can never again print a false "تمام شد" success.
+echo "-- بررسی نهایی دیتابیس..."
+if ! docker compose exec -T backend python -c "
+import asyncio
+from sqlalchemy import text
+from app.db import async_session
+
+async def check():
+    async with async_session() as s:
+        await s.execute(text('SELECT 1 FROM users LIMIT 1'))
+
+asyncio.run(check())
+"; then
+  echo "خطا: دیتابیس بعد از مایگریشن هم قابل دسترسی نیست. لاگ بک‌اند:" >&2
+  docker compose logs backend --tail 50 >&2
+  exit 1
+fi
+echo "✓ دیتابیس آماده و قابل دسترسیه."
 
 CRON_LINE="0 */6 * * * cd $INSTALL_DIR && ./scripts/backup.sh >> $INSTALL_DIR/backup.log 2>&1"
 ( crontab -l 2>/dev/null | grep -vF "$INSTALL_DIR/scripts/backup.sh" ; echo "$CRON_LINE" ) | crontab -
