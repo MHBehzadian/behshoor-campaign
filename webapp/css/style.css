@@ -149,3 +149,10 @@ tr:last-child td { border-bottom: none; }
 .rec-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--alert); display: none; }
 .rec-dot.on { display: inline-block; animation: pulse 1s infinite; }
 @keyframes pulse { 50% { opacity: .3; } }
+
+/* Map markers for shops that need attention today (e.g. due for follow-up). */
+.blink-marker { animation: blink-marker-pulse 1.1s ease-in-out infinite; }
+@keyframes blink-marker-pulse {
+  0%, 100% { fill-opacity: 1; stroke-opacity: 1; }
+  50% { fill-opacity: .25; stroke-opacity: .35; }
+}

@@ -36,7 +36,7 @@
   }
 
   // ---------------- dashboard ----------------
-  let dashMap, dashLayer;
+  let dashMap, dashLayer, dashBoundaryLayer, todayTargetRegionId = null;
 
   async function initDashboard() {
     await loadRegions();
@@ -46,7 +46,16 @@
       .map(([k, v]) => `<option value="${k}">${v}</option>`)
       .join("");
 
+    const today = new Date().toISOString().slice(0, 10);
+    const todaySchedule = await api(`/day-schedules?date_from=${today}&date_to=${today}`);
+    todayTargetRegionId = todaySchedule.find((s) => s.day_type === "distribution")?.target_region_id ?? null;
+
     dashMap = createMap("dash-map");
+    dashBoundaryLayer = renderRegionBoundaries(dashMap, regionsCache, todayTargetRegionId);
+    document.getElementById("dash-show-boundaries").addEventListener("change", (e) => {
+      if (e.target.checked) dashBoundaryLayer.addTo(dashMap);
+      else dashMap.removeLayer(dashBoundaryLayer);
+    });
     document.getElementById("dash-region-filter").addEventListener("change", refreshDashboard);
     document.getElementById("dash-status-filter").addEventListener("change", refreshDashboard);
     await refreshDashboard();

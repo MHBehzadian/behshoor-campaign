@@ -7,7 +7,8 @@
     window.location.href = "index.html";
   });
 
-  let packMap, packLayer;
+  let packMap, packLayer, packBoundaryLayer;
+  let followupMap, followupLayer;
 
   document.querySelectorAll(".tabs button").forEach((btn) => {
     btn.addEventListener("click", () => {
@@ -16,7 +17,10 @@
       btn.classList.add("active");
       document.getElementById(`panel-${btn.dataset.tab}`).classList.add("active");
       if (btn.dataset.tab === "pack" && packMap) setTimeout(() => packMap.invalidateSize(), 0);
-      if (btn.dataset.tab === "followup") loadFollowupQueue();
+      if (btn.dataset.tab === "followup") {
+        if (followupMap) setTimeout(() => followupMap.invalidateSize(), 0);
+        loadFollowupQueue();
+      }
     });
   });
 
@@ -29,6 +33,10 @@
       : "امروز ناحیه‌ای برای پخش پک تعیین نشده.";
 
     if (!packMap) packMap = createMap("pack-map");
+    if (region?.boundary_geojson) {
+      if (packBoundaryLayer) packMap.removeLayer(packBoundaryLayer);
+      packBoundaryLayer = renderRegionBoundaries(packMap, [region], region.id);
+    }
     const shops = await api("/pack-deliveries/queue");
     packLayer = renderShopLayer(packMap, packLayer, shops, (s) => `<b>${s.name}</b><br/>${s.address_text}`);
 
@@ -118,6 +126,15 @@
 
   async function loadFollowupQueue() {
     const shops = await api("/followups/queue");
+    if (!followupMap) followupMap = createMap("followup-map");
+    followupLayer = renderShopLayer(
+      followupMap,
+      followupLayer,
+      shops,
+      (s) => `<b>${s.name}</b><br/>${s.address_text}<br/>پیگیری ${ORDER_LABEL[s.status] || ""}`,
+      () => true // everything in this queue is due for follow-up right now
+    );
+
     document.getElementById("followup-list").innerHTML = shops.length
       ? shops
           .map(

@@ -32,13 +32,21 @@
   <main>
     <!-- Dashboard -->
     <section class="tab-panel active" id="panel-dashboard">
-      <div class="row" style="margin-bottom:10px">
+      <div class="row" style="margin-bottom:10px; align-items:center">
         <select id="dash-region-filter"><option value="">همه‌ی نواحی</option></select>
         <select id="dash-status-filter">
           <option value="">همه‌ی وضعیت‌ها</option>
         </select>
+        <label style="display:flex;align-items:center;gap:5px;font-size:13px;color:var(--ink-soft)">
+          <input type="checkbox" id="dash-show-boundaries" checked /> مرز همه‌ی نواحی
+        </label>
       </div>
       <div class="map tall" id="dash-map"></div>
+      <p class="meta">
+        <span class="chip money" style="padding:2px 8px">■</span> ناحیه‌ی هدف امروز &nbsp;
+        <span class="chip scout" style="padding:2px 8px">■</span> بقیه‌ی نواحی &nbsp;
+        <span class="chip visitor" style="padding:2px 8px">●</span> نیاز به پیگیری (چشمک‌زن)
+      </p>
       <div id="dash-list"></div>
     </section>
 
